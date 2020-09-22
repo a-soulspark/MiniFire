@@ -13,9 +13,7 @@ jobs:
     - uses: croconut/godot-multi-builder@v1
       with:
       #comma separated export presets
-        names: "Linux/X11, HTML5, Android, WindowsDesktop, MacOSX"
-        # if path is in the top level of your directory, skip
-        path-to-game: "tester"
+        names: "Android, WindowsDesktop"
         # defaults to true, Android currently only exports to debug
         debug-mode: "true"
         # outputs to path-to-game/builds/builds.zip
