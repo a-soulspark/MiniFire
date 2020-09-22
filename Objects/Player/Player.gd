@@ -26,7 +26,7 @@ func _ready():
 	if get_tree().network_peer: $Camera2D.current = is_network_master()
 
 func _process(_delta):
-	if get_tree().network_peer and !is_network_master(): return
+	if get_tree().network_peer and get_tree().network_peer.get_connection_status() and !is_network_master(): return
 	if move.x == 0 and (Input.is_action_just_released('ui_down') and move.y == 1 or Input.is_action_just_released('ui_up') and move.y == -1): move.y = 0
 	if move.y == 0 and (Input.is_action_just_released('ui_right') and move.x == 1 or Input.is_action_just_released('ui_left') and move.x == -1): move.x = 0
 	var old_move = move
