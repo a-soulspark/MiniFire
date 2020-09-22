@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Objects/Player/Player.gd" type="Script" id=1]
+[ext_resource path="res://Objects/Bullet/Bullet.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Objects/Player/player.png" type="Texture" id=3]
+[ext_resource path="res://Objects/Player/Outline.gd" type="Script" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 4.0
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Sprite
+
+func ready(color):
+	var data = texture.get_data()
+	data.lock()
+	
+	for x in range(data.get_width()):
+		for y in range(data.get_height()):
+			color.a = data.get_pixel(x, y).a
+			data.set_pixel(x, y, color)
+	
+	data.unlock()
+	
+	var silhouette = ImageTexture.new()
+	silhouette.create_from_image(data, texture.flags)
+	$Outline.texture = silhouette
+	$Outline.connect(\"draw\", $Outline, \"draw\")
+"
+
+[node name="Player" type="Area2D" groups=[
+"Processable",
+]]
+position = Vector2( 136, 24 )
+scale = Vector2( 3, 3 )
+z_index = 1
+script = ExtResource( 1 )
+Bullet = ExtResource( 2 )
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+z_index = 1
+texture = ExtResource( 3 )
+script = SubResource( 2 )
+
+[node name="Outline" type="Node2D" parent="Sprite"]
+show_behind_parent = true
+script = ExtResource( 4 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.8, 0.8 )
